@@ -1,0 +1,10 @@
+{
+  "width":1280,"height":720,"fps":30,"duration":16,
+  "theme":{"ink":"#26362d","paper":"#f5f1e8","accent":"#985025"},
+  "scenes":[
+    {"id":"hook","pattern":"title","start":0,"end":4,"title":"让表达，看得见。","body":"不是堆截图，而是把一句话变成一个清晰的视觉动作。","items":[{"text":"口播主线 · 人物始终可见","at":0.8},{"text":"重点出现 · 跟随表达节奏","at":2}]},
+    {"id":"workflow","pattern":"process","start":4,"end":8,"title":"从故事，到行动。","items":[{"text":"提炼一句核心观点","at":4.5},{"text":"用图形解释，而非装饰","at":5.6},{"text":"让真实证据接上结论","at":6.7}]},
+    {"id":"dialogue","pattern":"chat","start":8,"end":12,"title":"对话，也是讲解。","illustration":true,"items":[{"text":"怎样把内容变成自己的表达？","at":8.5},{"text":"先尝试，再获得具体反馈。","at":9.6}]},
+    {"id":"finish","pattern":"outro","start":12,"end":16,"title":"你的下一条视频。","body":"可编辑分镜 · 可复用动效 · 成片检查","items":[{"text":"用真实素材，讲清你的故事","at":12.6}]}
+  ],"captions":[]
+}

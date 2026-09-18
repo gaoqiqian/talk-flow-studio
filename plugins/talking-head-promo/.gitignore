@@ -1,0 +1,29 @@
+# Local credentials and environment overrides
+.env
+.env.*
+!.env.example
+*.dpapi
+elevenlabs.dpapi
+
+# Python and Node caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+node_modules/
+
+# Local workflow state and generated media (never publish creator footage)
+.workflow.lock
+workflow.json
+transcript.json
+captions.json
+subtitles.srt
+speech*.flac
+composition/
+renders/
+*.mp4
+*.mov
+*.webm
+
+# OS/editor files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,5 @@
+interface:
+  display_name: "Talk-Flow-Studio"
+  short_description: "Captions, motion graphics and pacing for spoken videos"
+  default_prompt: "Use $talking-head-promo to turn my spoken video into a polished story with timed captions and motion graphics."
+

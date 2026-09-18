@@ -1,0 +1,20 @@
+{
+  "name": "talking-head-promo",
+  "version": "0.1.0+codex.20260918083333",
+  "description": "Turn spoken creator videos into polished stories with timed captions, motion graphics, product demos and verified exports.",
+  "author": {
+    "name": "Talk-Flow-Studio"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Talk-Flow-Studio",
+    "shortDescription": "Captions, motion graphics and pacing for spoken videos.",
+    "longDescription": "Turn a spoken video into a polished story with timed captions, motion graphics, selective product demos and verified exports. Includes dependency guidance, encrypted local key setup, resumable transcription and reusable HyperFrames scenes. Requires Python, Node.js 22+, FFmpeg and HyperFrames. Cloud transcription requires authorized audio upload and may incur fees.",
+    "developerName": "Talk-Flow-Studio",
+    "category": "Productivity",
+    "capabilities": [
+      "Write"
+    ],
+    "defaultPrompt": "Turn my spoken video into a polished story with timed captions, motion graphics and a verified export."
+  }
+}

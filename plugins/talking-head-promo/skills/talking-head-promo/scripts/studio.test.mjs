@@ -1,0 +1,18 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {validatePlan,mapTranscript,buildProject,verifyMedia} from './studio.mjs';
+const example=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../examples/plan.json');
+const plan=()=>JSON.parse(fs.readFileSync(example,'utf8'));
+test('example is valid',()=>assert.equal(validatePlan(plan()).ok,true));
+test('framing offset is bounded and unconfirmed source warns',()=>{const p={...plan(),source:'voice.mp4'};assert.ok(validatePlan(p).warnings.some(w=>w.includes('framing')));p.speakerOffsetX=160;assert.equal(validatePlan(p).ok,true);assert.ok(!validatePlan(p).warnings.some(w=>w.includes('framing')));for(const offset of [Infinity,321,'160',null]){p.speakerOffsetX=offset;assert.equal(validatePlan(p).ok,false);}});
+test('compiler writes chosen framing without changing source',()=>{const root=fs.mkdtempSync(path.join(os.tmpdir(),'promo-framing-'));try{const p={...plan(),speakerOffsetX:160};const input=path.join(root,'plan.json');fs.writeFileSync(input,JSON.stringify(p));buildProject(input,path.join(root,'out'));assert.ok(fs.readFileSync(path.join(root,'out/index.html'),'utf8').includes('translateX(160px)'));}finally{fs.rmSync(root,{recursive:true,force:true});}});
+test('rejects traversal, overlap and reversed cues',()=>{const p=plan();p.source='../secret.mp4';p.scenes[1].start=3;p.scenes[0].items[1].at=.2;assert.ok(validatePlan(p).errors.length>=3);});
+test('malformed caption and theme produce errors instead of crash',()=>{const p=plan();p.theme=null;p.captions=[null];assert.equal(validatePlan(p).ok,false);});
+test('cut mapping removes excluded segments and flags split text',()=>{const r=mapTranscript([{start:0,end:3,text:'split'},{start:4,end:5,text:'removed'}],[{sourceStart:1,sourceEnd:2},{sourceStart:6,sourceEnd:8}]);assert.equal(r.duration,3);assert.equal(r.segments.length,1);assert.equal(r.segments[0].start,0);assert.equal(r.segments[0].needsTextReview,true);});
+test('rejects overlapping source cuts',()=>assert.throws(()=>mapTranscript([],[{sourceStart:0,sourceEnd:2},{sourceStart:1,sourceEnd:3}])));
+test('requires audio on voice project and checks duration',()=>{const p={...plan(),source:'voice.mp4'};const r=verifyMedia({videoCodec:'h264',width:1280,height:720,fps:30,duration:19,audioCodec:null},p);assert.equal(r.ok,false);assert.equal(r.errors.length,2);});
+test('compiler escapes copy and refuses overwriting',()=>{const root=fs.mkdtempSync(path.join(os.tmpdir(),'promo-test-'));try{const p=plan();p.scenes[0].title='<script>bad</script>';const input=path.join(root,'plan.json');fs.writeFileSync(input,JSON.stringify(p));const out=path.join(root,'out');buildProject(input,out);const html=fs.readFileSync(path.join(out,'index.html'),'utf8');assert.ok(html.includes('&lt;script&gt;'));assert.ok(!html.includes('<script>bad'));assert.throws(()=>buildProject(input,out),/never overwrite/);}finally{fs.rmSync(root,{recursive:true,force:true});}});

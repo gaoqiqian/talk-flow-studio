@@ -1,0 +1,20 @@
+{
+  "name": "talk-flow-studio",
+  "interface": {
+    "displayName": "Talk-Flow-Studio"
+  },
+  "plugins": [
+    {
+      "name": "talking-head-promo",
+      "source": {
+        "source": "local",
+        "path": "./plugins/talking-head-promo"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}
